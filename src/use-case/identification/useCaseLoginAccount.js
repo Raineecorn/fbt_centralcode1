@@ -5,7 +5,7 @@ const useCaseLoginAccount = ({ accountRepository, makeAdmin, jwtSecret, jwtExpir
   return async function loginAccount({ username, password }) {
     // Step 1: Validate the input with makeAdmin entity
     const adminEntity = makeAdmin({ username, password });
-    
+
     // Step 2: Find the account by username
     const account = await accountRepository.findByUsername({ username: adminEntity.getUsername() });
     if (!account) {
@@ -14,7 +14,7 @@ const useCaseLoginAccount = ({ accountRepository, makeAdmin, jwtSecret, jwtExpir
 
     // Step 3: Verify the password with bcrypt.compare
     const isPasswordValid = await bcrypt.compare(adminEntity.getPassword(), account.password);
-    
+
     if (!isPasswordValid) {
       throw new Error('Invalid password');
     }
@@ -23,6 +23,8 @@ const useCaseLoginAccount = ({ accountRepository, makeAdmin, jwtSecret, jwtExpir
     const token = jwt.sign({ id: account.id, username: account.username }, jwtSecret, {
       expiresIn: jwtExpiration,
     });
+
+    console.log("WELCOME UNIVERSALSAL HATDOG: ", username);
 
     return { token };
   };
