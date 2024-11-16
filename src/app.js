@@ -12,21 +12,25 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 //port used 3000 if invalid make 5000
 const PORT = process.env.PORT || 5000
- 
+
 
 
 //global routes
-app.use('/flashbox/api/tracker',require('./routes/tracker/app'))
-app.use('/flashbox/api/entry',require('./routes/entry/app'))
-app.use('/flashbox/api/account',require('./routes/identification/app'))
+app.use('/flashbox/api/tracker', require('./routes/tracker/app'))
+app.use('/flashbox/api/entry', require('./routes/entry/app'))
+app.use('/flashbox/api/account', require('./routes/identification/app'))
 
+// Route to check the version
+app.get('/flashbox/api/version', (req, res) => {
+  res.json({ version: "2024.11.01" });
+});
 
 //return if invalid routes
 app.use(async (req, res) => {
-    res.status(404).send(`Cant Find Routes`);
-  });
-  //listen port
+  res.status(404).send(`Cant Find Routes`);
+});
+//listen port
 app.listen(PORT, () =>
-    console.log(`Now Listening to Port ${PORT}!!`))
-  
-  module.exports = app
+  console.log(`Now Listening to Port ${PORT}!!`))
+
+module.exports = app
