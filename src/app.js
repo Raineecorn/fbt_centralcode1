@@ -22,7 +22,7 @@ app.use('/flashbox/api/account', require('./routes/identification/app'))
 
 // Route to check the version
 app.get('/flashbox/api/version', (req, res) => {
-  res.json({ version: "2024.11.01" });
+  res.json({ version: "2024.11.02" });
 });
 
 //return if invalid routes
