@@ -16,12 +16,18 @@ app.use('/flashbox/api/entry', require('./routes/entry/app'));
 app.use('/flashbox/api/account', require('./routes/identification/app'));
 
 app.get('/flashbox/api/version', (req, res) => {
-    res.json({ version: "2024.11.02" });
+    res.json({ version: "2024.11.020" });
 });
 
 // 404 Fallback
 app.use((req, res) => {
     res.status(404).send('Cannot Find Route');
+});
+
+// Server listening
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 
 // Export the app
