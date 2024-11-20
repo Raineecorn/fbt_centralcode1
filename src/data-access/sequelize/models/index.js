@@ -9,6 +9,14 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
+// Ensure `pg` package is installed
+try {
+  require('pg'); // Ensure Postgres library is loaded
+} catch (error) {
+  console.error('pg package is missing. Install it with "npm install pg".');
+  process.exit(1); // Exit process to avoid further errors
+}
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -16,6 +24,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+// Dynamically import all models in the current directory
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -23,9 +32,10 @@ fs
   })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;  // Ensure each model is accessible by its name
+    db[model.name] = model; // Ensure each model is accessible by its name
   });
 
+// Handle model associations if defined
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
