@@ -13,6 +13,7 @@ const db = {};
 try {
   require('pg'); // Ensure Postgres library is loaded
 } catch (error) {
+  console.log(error);
   console.error('pg package is missing. Install it with "npm install pg".');
   process.exit(1); // Exit process to avoid further errors
 }
